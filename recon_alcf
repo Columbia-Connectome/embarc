@@ -80,7 +80,7 @@ ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
 #}
 ################################################################################
 #command & pid=\$! ; sleep 5 && kill $pid
-recon-all -s ${subject}_${sess} -i ${T1} -parallel -openmp ${threads} & pid=\$!
+recon-all -all -hippocampal-subfields-T1 -s ${subject}_${sess} -i ${T1} -parallel -openmp ${threads} & pid=\$!
 
 #sleep $((${hr}*3600-600)) && kill \$pid
 sleep 180 && kill \$pid
