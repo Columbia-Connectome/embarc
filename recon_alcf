@@ -19,8 +19,9 @@ rm -rf $CMD_batch
 #######################################################################################################
 cat<<EOC >$CMD_batch
 #!/bin/bash
-#COBALT -t ${hr}:00:00
+#COBALT -t 00:05:00
 #COBALT -n $N
+#COBALT -q debug-cache-quad
 #COBALT --attrs mcdram=cache:numa=quad:ssds=required:ssd_size=64
 #COBALT -A AD_Brain_Imaging
 #COBALT -M jiook.cha@nyspi.columbia.edu
@@ -81,7 +82,8 @@ ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
 #command & pid=\$! ; sleep 5 && kill $pid
 recon-all -s ${subject}_${sess} -i ${T1} -parallel -openmp ${threads} & pid=\$!
 
-sleep $((${hr}*3600-600)) && kill \$pid
+#sleep $((${hr}*3600-600)) && kill \$pid
+sleep 180 && kill \$pid
 
 echo "now fetching the recon-all files to SCRATCH space"
 source=/local/scratch/${subject}_${sess}
