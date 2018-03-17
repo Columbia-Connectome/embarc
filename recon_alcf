@@ -61,25 +61,27 @@ ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
 #   $1 timeout in seconds
 #   $2 command
 # Returns 1 if timed out 0 otherwise
-timeout() {
+######################## THIS DID NOT WORK #######################
+#timeout() {
 
-    time=\$1
+#    time=\$1
 
     # start the command in a subshell to avoid problem with pipes
     # (spawn accepts one command)
-    command="/bin/sh -c \"\$2\""
+#    command="/bin/sh -c \"\$2\""
 
-    expect -c "set echo \"-noecho\"; set timeout $time; spawn -noecho $command; expect timeout { exit 1 } eof { exit 0 }"
+#    expect -c "set echo \"-noecho\"; set timeout $time; spawn -noecho $command; expect timeout { exit 1 } eof { exit 0 }"
 
-    if [ \$? = 1 ] ; then
-        echo "Timeout after \${time} seconds"
-    fi
+#    if [ \$? = 1 ] ; then
+#        echo "Timeout after \${time} seconds"
+#    fi
 
-}
+#}
 ################################################################################
+command & pid=$! ; sleep 5 && kill $pid
+recon-all -s ${subject}_${sess} -i ${T1} -parallel -openmp ${threads} & pid=\$!
 
-timeout $((${hr}*3600-600)) "recon-all -s ${subject}_${sess} -i ${T1} -parallel -openmp ${threads}"
-
+sleep $((${hr}*3600-600)) && kill \$pid
 
 echo "now fetching the recon-all files to SCRATCH space"
 source=/local/scratch/${subject}_${sess}
