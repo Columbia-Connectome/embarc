@@ -4,7 +4,7 @@
 #
 #!/bin/bash
 
-hr=16
+hr=0.5
 
 list=$1 #e.g., list_file_t1w.txt
 N=`wc ${1} | awk '{print $1}'`
