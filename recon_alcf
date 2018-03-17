@@ -84,7 +84,7 @@ timeout $((${hr}*3600-600)) "recon-all -s ${subject}_${sess} -i ${T1} -parallel 
 echo "now fetching the recon-all files to SCRATCH space"
 source=/local/scratch/${subject}_${sess}
 target=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/fs
-cp -rvf \$source \$target
+cp -rvf \${source} \${target}
 
 EOA
 
