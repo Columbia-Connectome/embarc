@@ -48,12 +48,12 @@ do
   T1=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/data/$subject/$sess/anat/${s}.nii.gz
 
 cat<<EOA >$CMD
-    #!/bin/bash
-    source ~/.bashrc
-    FREESURFER_HOME=/lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer
-    source $FREESURFER_HOME/SetUpFreeSurfer.sh
-    SUBJECTS_DIR=/local/scratch/
-    ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
+#!/bin/bash
+source ~/.bashrc
+FREESURFER_HOME=/lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer
+source $FREESURFER_HOME/SetUpFreeSurfer.sh
+SUBJECTS_DIR=/local/scratch/
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
 
 ################################################################################
 # Executes command with a timeout
