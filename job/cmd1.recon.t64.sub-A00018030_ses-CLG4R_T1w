@@ -1,0 +1,7 @@
+    #!/bin/bash
+    source ~/.bashrc
+    FREESURFER_HOME=/lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer
+    source /lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer/SetUpFreeSurfer.sh
+    SUBJECTS_DIR=/local/scratch/
+    ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=64
+    recon-all -s _ses-CLG4R -i /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/data/sub-A00018030/ses-CLG4R/anat/sub-A00018030_ses-CLG4R_T1w.nii.gz -parallel -openmp 64
