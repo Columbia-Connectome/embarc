@@ -4,7 +4,7 @@
 #
 #!/bin/bash
 
-hr=1
+hr=24
 
 list=$1 #e.g., list_file_t1w.txt
 N=`wc ${1} | awk '{print $1}'`
@@ -21,7 +21,6 @@ cat<<EOC >$CMD_batch
 #!/bin/bash
 #COBALT -t 00:05:00
 #COBALT -n $N
-#COBALT -q debug-cache-quad
 #COBALT --attrs mcdram=cache:numa=quad:ssds=required:ssd_size=64
 #COBALT -A AD_Brain_Imaging
 #COBALT -M jiook.cha@nyspi.columbia.edu
@@ -83,7 +82,7 @@ ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
 recon-all -all -hippocampal-subfields-T1 -s ${subject}_${sess} -i ${T1} -parallel -openmp ${threads} & pid=\$!
 
 #sleep $((${hr}*3600-600)) && kill \$pid
-sleep 180 && kill \$pid
+sleep 60 && kill \$pid
 
 echo "now fetching the recon-all files to SCRATCH space"
 source=/local/scratch/${subject}_${sess}
@@ -97,7 +96,7 @@ EOA
 
   echo "aprun -n 1 -N 1 -d ${threads} -j $((${threads}/64)) -cc depth -e OMP_NUM_THREADS=$threads $CMD > $LOG 2>&1 &">>$CMD_batch
 
-  echo "sleep 1">>$CMD_batch
+  echo "sleep 0.1">>$CMD_batch
   i=$(($i+1))
   echo $i
   #echo "execute $CMD_sub"
