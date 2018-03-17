@@ -1,3 +1,4 @@
+<<<<<<< HEAD
     #!/bin/bash
     source ~/.bashrc
     FREESURFER_HOME=/lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer
@@ -5,3 +6,43 @@
     SUBJECTS_DIR=/local/scratch/
     ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=64
     recon-all -s _ses-CLG4 -i /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/data/sub-A00018030/ses-CLG4/anat/sub-A00018030_ses-CLG4_T1w.nii.gz -parallel -openmp 64
+=======
+#!/bin/bash
+source ~/.bashrc
+FREESURFER_HOME=/lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer
+source /lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer/SetUpFreeSurfer.sh
+SUBJECTS_DIR=/local/scratch/
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=64
+
+################################################################################
+# Executes command with a timeout
+# Params:
+#   list_file_t1w.txt timeout in seconds
+#    command
+# Returns 1 if timed out 0 otherwise
+timeout() {
+
+    time=$1
+
+    # start the command in a subshell to avoid problem with pipes
+    # (spawn accepts one command)
+    command="/bin/sh -c \"$2\""
+
+    expect -c "set echo \"-noecho\"; set timeout ; spawn -noecho ; expect timeout { exit 1 } eof { exit 0 }"
+
+    if [ $? = 1 ] ; then
+        echo "Timeout after ${time} seconds"
+    fi
+
+}
+################################################################################
+
+timeout 57000 "recon-all -s sub-A00018030_ses-CLG4 -i /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/data/sub-A00018030/ses-CLG4/anat/sub-A00018030_ses-CLG4_T1w.nii.gz -parallel -openmp 64"
+
+
+echo "now fetching the recon-all files to SCRATCH space"
+source=/local/scratch/sub-A00018030_ses-CLG4
+target=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/fs
+cp -rvf  
+
+>>>>>>> e28ec5eb192057a5464565381bf30f36fa9c8b29
