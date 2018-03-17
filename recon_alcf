@@ -4,49 +4,55 @@
 #
 #!/bin/bash
 
-list=$1
+list=$1 #e.g., list_file_t1w.txt
 N=`wc ${1} | awk '{print $1}'`
 threads=64
 #threadsX2=$((${threads}*2))
 
 nki=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/data
 
-CMD_batch=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/job/cmd1.batch.recon.${list}
+CMD_batch=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.batch.recon.${list}
 rm -rf $CMD_batch
 
 #######################################################################################################
 cat<<EOC >$CMD_batch
 #!/bin/bash
-#COBALT -t 12:00:00
+#COBALT -t 16:00:00
 #COBALT -n $N
-#COBALT --attrs mcdram=cache:numa=quad
+#COBALT --attrs mcdram=cache:numa=quad:ssds=required:ssd_size=64
 #COBALT -A AD_Brain_Imaging
 #COBALT -M jiook.cha@nyspi.columbia.edu
 #COBALT ATP_ENABLED=1
 echo start............................................
+
+
 EOC
 
 #######################################################################################################
 
 i=1
-for s in `cat /lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/\$list`
+for s in `cat /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/\$list`
 
 do
   #s=`echo $SUBJECT | egrep -o '[0-9]{8}'`
-  CMD=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/job/cmd1.recon.t${threads}.${s}
+  CMD=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t${threads}.${s}
   rm -rf $CMD
 
-  LOG=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/job/log.cmd1.recon.t${threads}.${s}
+  LOG=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t${threads}.${s}
   rm -rf $LOG
+
+  subject=`echo $s | cut -d "_" -f1`
+  sess=`echo $s | cut -d "_" -f2`
+  T1=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/data/$subject/$sess/anat/${s}.nii.gz
 
 cat<<EOA >$CMD
     #!/bin/bash
     source ~/.bashrc
     FREESURFER_HOME=/lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer
     source $FREESURFER_HOME/SetUpFreeSurfer.sh
-    SUBJECTS_DIR=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/fs/fs_tbd/new
+    SUBJECTS_DIR=/local/scratch/
     ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
-    recon-all -s ${SUBJECT} -i ${s}*T1w.nii.gz -parallel -openmp ${threads}
+    recon-all -s ${SUBJECT}_${sess} -i ${T1} -parallel -openmp ${threads}
 EOA
 
   ################################################## END OF CMD##########################################################
