@@ -1,0 +1,69 @@
+#!#!/usr/bin/env bash
+# a batch job submission code for recon-all in ALCF-Theta
+# usage: recon_1.#!/bin/sh
+#
+#!/bin/bash
+
+list=$1
+N=`wc ${1} | awk '{print $1}'`
+threads=64
+#threadsX2=$((${threads}*2))
+
+nki=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/data
+
+CMD_batch=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/job/cmd1.batch.recon.${list}
+rm -rf $CMD_batch
+
+#######################################################################################################
+cat<<EOC >$CMD_batch
+#!/bin/bash
+#COBALT -t 12:00:00
+#COBALT -n $N
+#COBALT --attrs mcdram=cache:numa=quad
+#COBALT -A AD_Brain_Imaging
+#COBALT -M jiook.cha@nyspi.columbia.edu
+#COBALT ATP_ENABLED=1
+echo start............................................
+EOC
+
+#######################################################################################################
+
+i=1
+for s in `cat /lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/\$list`
+
+do
+  #s=`echo $SUBJECT | egrep -o '[0-9]{8}'`
+  CMD=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/job/cmd1.recon.t${threads}.${s}
+  rm -rf $CMD
+
+  LOG=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/code_hbn_alcf/job/log.cmd1.recon.t${threads}.${s}
+  rm -rf $LOG
+
+cat<<EOA >$CMD
+    #!/bin/bash
+    source ~/.bashrc
+    FREESURFER_HOME=/lus/theta-fs0/projects/AD_Brain_Imaging/app/freesurfer
+    source $FREESURFER_HOME/SetUpFreeSurfer.sh
+    SUBJECTS_DIR=/lus/theta-fs0/projects/AD_Brain_Imaging/anal/HBN/fs/fs_tbd/new
+    ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$threads
+    recon-all -s ${SUBJECT} -i ${s}*T1w.nii.gz -parallel -openmp ${threads}
+EOA
+
+  ################################################## END OF CMD##########################################################
+  chmod +x $CMD
+
+  echo "aprun -n 1 -N 1 -d ${threads} -j $((${threads}/64)) -cc depth -e OMP_NUM_THREADS=$threads $CMD > $LOG 2>&1 &">>$CMD_batch
+
+  echo "sleep 0.1">>$CMD_batch
+  i=$(($i+1))
+  echo $i
+  #echo "execute $CMD_sub"
+
+done
+
+echo "wait" >> $CMD_batch
+### batch submission
+
+echo $CMD_batch
+chmod +x $CMD_batch
+echo qsub $CMD_batch
