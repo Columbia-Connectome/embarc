@@ -60,7 +60,7 @@ EOA
 
   echo "aprun -n 1 -N 1 -d ${threads} -j $((${threads}/64)) -cc depth -e OMP_NUM_THREADS=$threads $CMD > $LOG 2>&1 &">>$CMD_batch
 
-  echo "sleep 0.1">>$CMD_batch
+  echo "sleep 1">>$CMD_batch
   i=$(($i+1))
   echo $i
   #echo "execute $CMD_sub"
