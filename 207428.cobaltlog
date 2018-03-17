@@ -1,0 +1,7 @@
+Jobid: 207428
+qsub --mode script -t 00:03:00 -n 8 -q debug-flat-quad --attrs mcdram=cache:numa=quad:ssds=required:ssd_size=64 -A AD_Brain_Imaging -M jiook.cha@nyspi.columbia.edu ATP_ENABLED=1 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.batch.recon.list_test
+Sat Mar 17 05:10:56 2018 +0000 (UTC) submitted with cwd set to: /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc
+jobid 207428 submitted from terminal /dev/pts/19
+2018-03-17 05:11:54,998 INFO: Starting Resource_Prologue
+2018-03-17 05:11:55,004 DEBUG: no enabling attribute found
+2018-03-17 05:11:55,004 INFO: Resource_Prologue finished with exit code 0

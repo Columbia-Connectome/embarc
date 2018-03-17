@@ -1,0 +1,28 @@
+#!/bin/bash
+#COBALT -t 00:03:00
+#COBALT -n 8
+#COBALT -q debug-flat-quad
+#COBALT --attrs mcdram=cache:numa=quad:ssds=required:ssd_size=64
+#COBALT -A AD_Brain_Imaging
+#COBALT -M jiook.cha@nyspi.columbia.edu
+#COBALT ATP_ENABLED=1
+echo start............................................
+
+
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00066302_ses-DSA_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00066302_ses-DSA_T1w 2>&1 &
+sleep 1
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00053455_ses-NFB2_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00053455_ses-NFB2_T1w 2>&1 &
+sleep 1
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00053455_ses-NFB3_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00053455_ses-NFB3_T1w 2>&1 &
+sleep 1
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00054153_ses-DS2_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00054153_ses-DS2_T1w 2>&1 &
+sleep 1
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00060383_ses-DSA_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00060383_ses-DSA_T1w 2>&1 &
+sleep 1
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00061923_ses-CLGA_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00061923_ses-CLGA_T1w 2>&1 &
+sleep 1
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00039463_ses-DS2_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00039463_ses-DS2_T1w 2>&1 &
+sleep 1
+aprun -n 1 -N 1 -d 64 -j 1 -cc depth -e OMP_NUM_THREADS=64 /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/cmd1.recon.t64.sub-A00030947_ses-DS2_T1w > /lus/theta-fs0/projects/AD_Brain_Imaging/anal/NKI/embarc/job/log.cmd1.recon.t64.sub-A00030947_ses-DS2_T1w 2>&1 &
+sleep 1
+wait
